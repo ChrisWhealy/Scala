@@ -25,15 +25,15 @@ object supermarket {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Item class
   class Item(pDesc: String, pUnitPrice: Int) {
-    var desc      = pDesc
-    var unitPrice = pUnitPrice
+    val desc      = pDesc
+    val unitPrice = pUnitPrice
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Discount class
   class Discount(pQty: Int, pAmount: Int) {
-    var qty    = pQty
-    var amount = pAmount
+    val qty    = pQty
+    val amount = pAmount
 
     override def toString: String =
       if (amount > 0)
@@ -46,9 +46,9 @@ object supermarket {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Bill item class
   class BillItem(pQty: Int, pItem: Item, pDiscount: Discount) {
-    var qty      = pQty
-    var item     = pItem
-    var discount = pDiscount
+    val qty      = pQty
+    val item     = pItem
+    val discount = pDiscount
 
     def price =
       BillItem.calcPrice(this.qty)(this.item.unitPrice)(this.discount)
@@ -59,7 +59,7 @@ object supermarket {
   object BillItem {
     // Pricing functions
     def calcPrice(qty: Int)(unitPrice: Int)(discount: Discount): Int = {
-      def disc = calcDiscount(qty)(discount.qty)(discount.amount)
+      val disc = calcDiscount(qty)(discount.qty)(discount.amount)
       calcAmount(qty)(unitPrice)(disc)
     }
 
@@ -133,10 +133,10 @@ object supermarket {
 
   // --------------------------------------------------------------------------
   // Read SKU from generic stock list
-  var readItem = genericMapGet(stockList)(UNKNOWN_SKU)(_: Int)
+  val readItem = genericMapGet(stockList)(UNKNOWN_SKU)(_: Int)
 
   // Fetch the discount for a given SKU (which might be zero)
-  var readDiscount = genericMapGet(discountedSkus)(NO_DISCOUNT)(_: Int)
+  val readDiscount = genericMapGet(discountedSkus)(NO_DISCOUNT)(_: Int)
 
   // --------------------------------------------------------------------------
   // Increment the quantity for an existing item on the bill
