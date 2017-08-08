@@ -189,19 +189,6 @@ object supermarket {
   def formatQty(qty: Int) = (if (qty < 10) " " else "") + qty
 
   // --------------------------------------------------------------------------
-  // Create the shopping bill
-  val shoppingBill = basket.foldLeft(collection.mutable.Map[Int,BillItem]())(addItemToBill)
-
-
-  // --------------------------------------------------------------------------
-  // Print stock list
-  stockList.values.foreach { i =>
-    print(formatDesc(i.desc, longestDesc))
-    print(if (i.unitPrice < 1000) " " else "")
-    println(formatPrice(i.unitPrice, CURRENCY_SYMBOL))
-  }
-
-  // --------------------------------------------------------------------------
   // Print the shopping bill
   def printItem(acc: Int, item: BillItem) = {
     val discQty = Math.floor(item.qty / item.discount.qty).toInt
@@ -214,6 +201,18 @@ object supermarket {
 
     acc + item.price
   }
+
+  // --------------------------------------------------------------------------
+  // Print stock list
+  stockList.values.foreach { i =>
+    print(formatDesc(i.desc, longestDesc))
+    print(if (i.unitPrice < 1000) " " else "")
+    println(formatPrice(i.unitPrice, CURRENCY_SYMBOL))
+  }
+
+  // --------------------------------------------------------------------------
+  // Create the shopping bill
+  val shoppingBill = basket.foldLeft(collection.mutable.Map[Int,BillItem]())(addItemToBill)
 
   // --------------------------------------------------------------------------
   // Print the total line at the end of the shopping bill
