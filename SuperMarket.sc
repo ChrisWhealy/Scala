@@ -57,7 +57,6 @@ object supermarket {
   // --------------------------------------------------------------------------
   // BillItem companion object
   object BillItem {
-    // ------------------------------------------------------------------------
     // Pricing functions
     def calcPrice(qty: Int)(unitPrice: Int)(discount: Discount): Int = {
       def disc = calcDiscount(qty)(discount.qty)(discount.amount)
@@ -151,9 +150,10 @@ object supermarket {
   // Add an item in the shopping basket to the bill.
   // Discounts amounts cannot be calculated until after all the items in the
   // shopping basket have been added to the bill
-  def addItemToBill(acc: collection.mutable.Map[Int,BillItem], sku: Int): collection.mutable.Map[Int,BillItem] = {
-    // First, update the billed quantity for this item and read both the sku and
-    // discount objects.  Pass all of these as arguments to the inner function
+  def addItemToBill(acc: collection.mutable.Map[Int,BillItem],
+                    sku: Int): collection.mutable.Map[Int,BillItem] = {
+    // Update the billed quantity for this item and get both the SKU and
+    // discount objects.
     val newQty       = updateQty(acc)(sku)
     val thisItem     = readItem(sku)
     val thisDiscount = readDiscount(sku)
@@ -179,9 +179,10 @@ object supermarket {
       pennies
   }
 
-  def formatPounds(price: Int) = Math.floor(price / 100).toInt
+  def formatCurrency(price: Int) = Math.floor(price / 100).toInt
 
-  def formatPrice(price: Int, currSymbol: String) = currSymbol + formatPounds(price) + DECIMAL_SEPARATOR + formatPennies(price)
+  def formatPrice(price: Int, currSymbol: String) =
+    currSymbol + formatCurrency(price) + DECIMAL_SEPARATOR + formatPennies(price)
 
   def formatDesc(desc: String, max: Int) = desc.padTo(max," ").mkString
 
@@ -206,7 +207,8 @@ object supermarket {
     val discQty = Math.floor(item.qty / item.discount.qty).toInt
 
     print(formatQty(item.qty) + " ")
-    print(formatDesc(item.item.desc + item.discount.toString, longestDesc + DISCOUNT_TXT_LEN))
+    print(formatDesc(item.item.desc + item.discount.toString,
+                     longestDesc + DISCOUNT_TXT_LEN))
     print(if (item.price < 1000) " " else "")
     println(formatPrice(item.price, CURRENCY_SYMBOL))
 
